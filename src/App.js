@@ -1,25 +1,23 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import AddListCard from './components/addTask';
+import ViewList from './components/viewTask'
 
 function App() {
+  const handlePageChange = (index) => {
+    if(index === 0) setCurrentPage(<ViewList changePage={handlePageChange}></ViewList>)
+    else if(index === 1) setCurrentPage(<AddListCard changePage={handlePageChange}></AddListCard>)
+  }
+  
+  const [currentPage, setCurrentPage] = useState(<ViewList changePage={handlePageChange}></ViewList>)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      { currentPage }
     </div>
   );
 }
+
+
 
 export default App;

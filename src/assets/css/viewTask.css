@@ -1,0 +1,72 @@
+html, body {
+    margin: 0px;
+}
+  
+.container {
+    background-image: linear-gradient(to top, #f43b47 0%, #453a94 100%);
+    position:absolute;
+    top:0px;
+    right:0px;
+    bottom:0px;
+    left:0px;
+}
+
+h1 {
+    color: rgb(10, 9, 9);
+    margin-left: 38%;
+    font-size: 50px;
+    font-weight: bolder;
+}
+
+h2 {
+    color: rgb(10, 9, 9);
+    margin-left: 42%;
+    font-weight: bolder;
+}
+
+.list {
+    margin-top: 5%;
+    margin-left: 32%;
+    background-color: rgb(10, 9, 9);
+    width: 500px;
+    height: 200px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+th {
+    color: white;
+}
+
+td {
+    color: rgb(5, 169, 198);
+}
+
+td, th {
+    padding: 15px;
+}
+
+.image-icon {
+    width: 30px;
+    height: 30px;
+}
+
+@keyframes grow {
+    0% { width: 80px; height: 80px; }
+    50% { width: 90px; height: 90px; }
+    100% { width: 80px; height: 80px; }
+}
+
+.changeButton {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    width: 80px;
+    height: 80px;
+}
+
+.changeButton:hover {
+    animation-name: grow;
+    animation-duration: 1.3s;
+    animation-iteration-count: infinite;
+}
