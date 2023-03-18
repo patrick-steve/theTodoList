@@ -1,30 +1,38 @@
 import { useEffect, useState } from 'react'
 import { onValue, ref, remove } from 'firebase/database'
+import { useNavigate } from 'react-router-dom'
 
 import '../assets/css/viewTask.css'
 import addTaskIcon from '../assets/images/button.png'
 import delIcon from '../assets/images/trash.png'
+import logoutIcon from '../assets/images/logout.png'
 
 import db from '../firebase'
 
 const ViewTask = (props) => {
     const [todoList, setTodoList] = useState([])
+    const navigate = useNavigate()
+
+    const checkUserValidation = () => {
+        if(localStorage.getItem("key")) { 
+            console.log("User is validated !!")
+            return localStorage.getItem("key")
+        }
+        else { navigate('/login', { replace: true }) }
+    }
 
     useEffect(() => {
-        const query = ref(db, "tasks")
+        const key = checkUserValidation()
+        const query = ref(db, "tasks/"+key+"/todos")
         onValue(query, (snapshot) => {
             let tasks = []
             snapshot.forEach(element => {
-                tasks.push({ id: element.key, value: element.val() })
+                if(element.val() !== "Default") tasks.push({ id: element.key, value: element.val() })
             })
             setTodoList(tasks)
         })
 
     }, [])
-
-    const handlePageChange = () => {
-        props.changePage(1)
-    }
 
     const handleDelete = (id) => {
         const newList = todoList.filter((el, i) => i !== id)
@@ -33,6 +41,7 @@ const ViewTask = (props) => {
 
     return (
         <div className='container'>
+            <div className='wrapper'>
             <h1>Works to do ... </h1>
             <table className='list'>
                 <thead>
@@ -53,8 +62,14 @@ const ViewTask = (props) => {
                 </tbody>
             </table>
             <h2>Tasks Remaining : {todoList.length}</h2>
-
-            <img className='changeButton' src={addTaskIcon} alt="Next Page" onClick={handlePageChange}/>
+            </div>
+            <div className="logout" onClick={() => {
+                localStorage.removeItem("key")
+                navigate("/login")
+            }}>
+                Logout &nbsp; <img className="logout-icon" src={logoutIcon} alt="logout"/>
+            </div>
+            <img className='changeButton' src={addTaskIcon} alt="Next Page" onClick={() => navigate('/add', { replace: true })}/>
         </div>
     )
 }
@@ -63,7 +78,8 @@ const TaskElement = (props) => {
 
     const handleDelete = () => {
         props.deleteTask(props.id)
-        remove(ref(db, "tasks/" + props.fid))
+        console.log(props.fid)
+        remove(ref(db, "tasks/"+localStorage.getItem('key')+"/todos/" + props.fid))
     }
 
     return(
